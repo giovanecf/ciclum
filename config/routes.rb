@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "entrar", to: "sessions#new", as: :login
   post "entrar", to: "sessions#create"
+  post "visitante", to: "guest_sessions#create", as: :guest_session
   delete "sair", to: "sessions#destroy", as: :logout
   get "cadastro", to: "registrations#new", as: :signup
   post "cadastro", to: "registrations#create"

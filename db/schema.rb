@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_11_010000) do
   create_table "cycle_subjects", force: :cascade do |t|
     t.integer "study_cycle_id", null: false
     t.string "name", null: false
@@ -27,16 +27,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_000000) do
   end
 
   create_table "study_cycles", force: :cascade do |t|
-    t.integer "user_id"
     t.string "name", null: false
     t.integer "weekly_reference_minutes", default: 1440, null: false
     t.boolean "active", default: false, null: false
     t.string "seed_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "active"], name: "only_one_active_cycle_per_user", unique: true, where: "active = true"
-    t.index ["user_id", "seed_key"], unique: true, where: "seed_key IS NOT NULL"
+    t.integer "user_id"
+    t.index ["user_id", "seed_key"], name: "index_study_cycles_on_user_id_and_seed_key", unique: true, where: "seed_key IS NOT NULL"
     t.index ["user_id"], name: "index_study_cycles_on_user_id"
+    t.index ["user_id"], name: "only_one_active_cycle_per_user", unique: true, where: "active = true"
   end
 
   create_table "study_sessions", force: :cascade do |t|
@@ -53,15 +53,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_000000) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest", null: false
+    t.string "email"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "guest_token_digest"
+    t.datetime "guest_expires_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["guest_expires_at"], name: "index_users_on_guest_expires_at"
+    t.index ["guest_token_digest"], name: "index_users_on_guest_token_digest", unique: true
   end
 
   add_foreign_key "cycle_subjects", "study_cycles"
+  add_foreign_key "study_cycles", "users"
   add_foreign_key "study_sessions", "cycle_subjects"
   add_foreign_key "study_sessions", "study_cycles"
-  add_foreign_key "study_cycles", "users"
 end

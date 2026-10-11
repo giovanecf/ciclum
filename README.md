@@ -15,7 +15,9 @@ Aplicação para planejar e acompanhar ciclos contínuos de estudo. Em desenvolv
 
 Abra <http://ciclum.farmacia.local/>. O serviço prepara o banco `ciclum_development` no `postgres-db` compartilhado ao iniciar. O primeiro acesso prepara o ciclo Default (1.440 min) automaticamente; rodar o seed novamente preserva alterações e ciclos ativos existentes.
 
-Crie uma conta em <http://ciclum.farmacia.local/cadastro/>. Depois, entre com e-mail e senha em <http://ciclum.farmacia.local/entrar/>. Registros antigos sem proprietário são associados à primeira conta criada após a atualização.
+Crie uma conta em <http://ciclum.farmacia.local/cadastro/>. Depois, entre com e-mail e senha em <http://ciclum.farmacia.local/entrar/>. Registros antigos sem proprietário são associados à primeira conta permanente criada após a atualização.
+
+Também é possível continuar como visitante pela tela de entrada. Ciclos, disciplinas e sessões do visitante ficam no PostgreSQL; o navegador guarda somente o token da sessão. A sessão é encerrada ao sair e os dados são removidos após 24 horas sem atividade. Se criar uma conta durante a sessão, os ciclos são transferidos para a conta permanente.
 
 O Caddy do Olympus encaminha o domínio local ao servidor Rails. Esta aplicação não foi projetada para exposição pública.
 

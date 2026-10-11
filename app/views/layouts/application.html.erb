@@ -21,7 +21,7 @@
       <% if current_user %>
         <nav><%= link_to "Dashboard", root_path, class: "ffds-nav-link" %><%= link_to "Disciplinas", cycle_subjects_path, class: "ffds-nav-link" %><%= link_to "Sessões", study_sessions_path, class: "ffds-nav-link" %><%= link_to "Ciclos", study_cycles_path, class: "ffds-nav-link" %></nav>
         <span class="cycle-pill ffds-badge ffds-badge-primary" title="Nome do ciclo ativo atualmente">Ciclo: <%= active_cycle.name %></span>
-        <div class="account-menu"><span><%= current_user.email %></span><%= button_to "Sair", logout_path, method: :delete, class: "button ffds-btn ffds-btn-sm ffds-btn-secondary" %></div>
+        <div class="account-menu"><span><%= current_user.guest? ? "Visitante" : current_user.email %></span><%= button_to(current_user.guest? ? "Encerrar sessão" : "Sair", logout_path, method: :delete, class: "button ffds-btn ffds-btn-sm ffds-btn-secondary") %></div>
       <% else %>
         <nav class="auth-nav"><%= link_to "Entrar", login_path, class: "ffds-nav-link" %><%= link_to "Criar conta", signup_path, class: "ffds-nav-link" %></nav>
       <% end %>

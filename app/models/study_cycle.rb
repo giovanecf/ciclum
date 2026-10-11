@@ -1,7 +1,7 @@
 class StudyCycle < ApplicationRecord
   belongs_to :user
-  has_many :cycle_subjects, dependent: :destroy
   has_many :study_sessions, dependent: :destroy
+  has_many :cycle_subjects, dependent: :destroy
   validates :name, presence: true
   validates :weekly_reference_minutes, numericality: { only_integer: true, greater_than: 0 }
 

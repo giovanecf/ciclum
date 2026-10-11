@@ -7,6 +7,9 @@
       <div class="field"><%= f.label :password, "Senha" %><%= f.password_field :password, required: true, autocomplete: "current-password", class: "ffds-form-control" %></div>
       <div class="form-actions"><%= f.submit "Entrar", class: "button ffds-btn ffds-btn-primary" %></div>
     <% end %>
+    <div class="auth-divider"><span>ou</span></div>
+    <%= button_to "Continuar como visitante", guest_session_path, method: :post, class: "button ffds-btn ffds-btn-secondary guest-button" %>
+    <p class="muted guest-note">Os ciclos ficam salvos temporariamente no servidor e expiram após 24 horas sem atividade. Crie uma conta para mantê-los.</p>
     <p class="auth-switch">Ainda não tem conta? <%= link_to "Criar conta", signup_path, class: "text-link" %></p>
   </section>
 </div>

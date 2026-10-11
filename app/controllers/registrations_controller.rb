@@ -3,19 +3,25 @@ class RegistrationsController < ApplicationController
   skip_before_action :ensure_default_cycle
 
   def new
-    redirect_to root_path if current_user
+    redirect_to root_path if current_user && !current_user.guest?
     @user ||= User.new
   end
 
   def create
-    return redirect_to root_path if current_user
+    return redirect_to root_path if current_user && !current_user.guest?
 
+    guest = current_user if current_user&.guest?
     @user = User.new(user_params)
     created = false
 
     User.transaction do
       if @user.save
-        StudyCycle.where(user_id: nil).update_all(user_id: @user.id) if User.count == 1
+        if guest
+          guest.study_cycles.update_all(user_id: @user.id)
+          guest.destroy!
+        elsif User.where(guest_token_digest: nil).count == 1
+          StudyCycle.where(user_id: nil).update_all(user_id: @user.id)
+        end
         reset_session
         session[:user_id] = @user.id
         created = true

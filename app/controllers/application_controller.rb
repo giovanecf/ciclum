@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :purge_expired_guest_users
   before_action :require_login
   before_action :ensure_default_cycle
   helper_method :active_cycle, :current_user
@@ -14,7 +15,20 @@ class ApplicationController < ActionController::Base
   def current_user
     return @current_user if defined?(@current_user)
 
-    @current_user = User.find_by(id: session[:user_id])
+    @current_user = if session[:user_id].present?
+      User.find_by(id: session[:user_id])
+    elsif session[:guest_token].present?
+      User.find_active_guest(session[:guest_token])
+    end
+    session.delete(:guest_token) if session[:guest_token].present? && !@current_user
+    @current_user
+  end
+
+  def purge_expired_guest_users
+    Rails.cache.fetch("ciclum/purge_expired_guest_users", expires_in: 1.hour) do
+      User.purge_expired_guests!
+      true
+    end
   end
 
   def ensure_default_cycle

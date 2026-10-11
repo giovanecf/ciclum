@@ -22,6 +22,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    current_user&.destroy! if current_user&.guest?
     reset_session
     redirect_to login_path, notice: "Você saiu da sua conta."
   end
