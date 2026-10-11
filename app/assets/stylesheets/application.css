@@ -577,6 +577,7 @@ main.container,
 
 .empty-state {
   padding: var(--space-12) var(--space-6);
+  margin-bottom: var(--space-5);
   text-align: center;
 }
 
