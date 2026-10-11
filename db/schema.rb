@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_010000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_11_020000) do
   create_table "cycle_subjects", force: :cascade do |t|
     t.integer "study_cycle_id", null: false
     t.string "name", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_010000) do
     t.datetime "updated_at", null: false
     t.string "guest_token_digest"
     t.datetime "guest_expires_at"
+    t.string "full_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["guest_expires_at"], name: "index_users_on_guest_expires_at"
     t.index ["guest_token_digest"], name: "index_users_on_guest_token_digest", unique: true

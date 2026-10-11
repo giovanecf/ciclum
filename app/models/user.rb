@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   before_validation :normalize_email
 
+  validates :full_name, length: { maximum: 150 }, allow_blank: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }, unless: :guest?
   validates :password, presence: true, if: -> { !guest? && new_record? }
   validates :password, length: { minimum: 8, maximum: 72 }, if: -> { password.present? }
