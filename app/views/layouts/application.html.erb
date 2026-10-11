@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f9f8f6">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <%= csrf_meta_tags %><%= csp_meta_tag %>
-    <% design_system_host = Rails.env.production? ? "https://design-system.farmacia.ufmg.br" : "#{request.protocol}design-system.farmacia.local" %>
+    <% design_system_host = Rails.env.production? ? "/__design-system" : "#{request.protocol}design-system.farmacia.local" %>
     <link id="farmacia-design-system-css" rel="stylesheet" href="<%= design_system_host %>/dist/latest/farmacia-ds.min.css">
     <script id="farmacia-design-system-js" src="<%= design_system_host %>/dist/latest/farmacia-ds.min.js" defer></script>
     <% unless Rails.env.production? %>
