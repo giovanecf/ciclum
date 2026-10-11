@@ -6,10 +6,21 @@
     <meta name="theme-color" content="#f9f8f6">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <%= csrf_meta_tags %><%= csp_meta_tag %>
-    <% design_system_host = Rails.env.production? ? "https://design-system.farmacia.ufmg.br" : "https://design-system.farmacia.local" %>
-    <link rel="stylesheet" href="<%= design_system_host %>/dist/latest/farmacia-ds.min.css">
-    <script src="<%= design_system_host %>/dist/latest/farmacia-ds.min.js" defer></script>
-    <%= stylesheet_link_tag :app %>
+    <% design_system_host = Rails.env.production? ? "https://design-system.farmacia.ufmg.br" : "#{request.protocol}design-system.farmacia.local" %>
+    <link id="farmacia-design-system-css" rel="stylesheet" href="<%= design_system_host %>/dist/latest/farmacia-ds.min.css">
+    <script id="farmacia-design-system-js" src="<%= design_system_host %>/dist/latest/farmacia-ds.min.js" defer></script>
+    <% unless Rails.env.production? %>
+      <script>
+        (() => {
+          const fallback = "https://design-system.farmacia.ufmg.br/dist/latest/";
+          const stylesheet = document.getElementById("farmacia-design-system-css");
+          const script = document.getElementById("farmacia-design-system-js");
+          stylesheet.addEventListener("error", () => { stylesheet.href = `${fallback}farmacia-ds.min.css`; }, { once: true });
+          script.addEventListener("error", () => { script.src = `${fallback}farmacia-ds.min.js`; }, { once: true });
+        })();
+      </script>
+    <% end %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", defer: true %>
   </head>
   <body class="ffds-root">
@@ -19,11 +30,11 @@
         <span>ciclum</span>
       <% end %>
       <% if current_user %>
-        <nav><%= link_to "Dashboard", root_path, class: "ffds-nav-link" %><%= link_to "Disciplinas", cycle_subjects_path, class: "ffds-nav-link" %><%= link_to "Sessões", study_sessions_path, class: "ffds-nav-link" %><%= link_to "Ciclos", study_cycles_path, class: "ffds-nav-link" %></nav>
+        <nav><%= link_to "Dashboard", root_path, class: "ffds-nav-link" %><%= link_to "Disciplinas", cycle_subjects_path, class: "ffds-nav-link" %><%= link_to "Sessões", study_sessions_path, class: "ffds-nav-link" %><%= link_to "Ciclos", study_cycles_path, class: "ffds-nav-link" %><%= link_to "Sobre", about_path, class: "ffds-nav-link" %></nav>
         <span class="cycle-pill ffds-badge ffds-badge-primary" title="Nome do ciclo ativo atualmente">Ciclo: <%= active_cycle.name %></span>
         <div class="account-menu"><span><%= current_user.guest? ? "Visitante" : current_user.email %></span><%= button_to(current_user.guest? ? "Encerrar sessão" : "Sair", logout_path, method: :delete, class: "button ffds-btn ffds-btn-sm ffds-btn-secondary") %></div>
       <% else %>
-        <nav class="auth-nav"><%= link_to "Entrar", login_path, class: "ffds-nav-link" %><%= link_to "Criar conta", signup_path, class: "ffds-nav-link" %></nav>
+        <nav class="auth-nav"><%= link_to "Entrar", login_path, class: "ffds-nav-link" %><%= link_to "Criar conta", signup_path, class: "ffds-nav-link" %><%= link_to "Sobre", about_path, class: "ffds-nav-link" %></nav>
       <% end %>
     </div></header>
     <main class="container ffds-container page <%= 'auth-page' unless current_user %>">

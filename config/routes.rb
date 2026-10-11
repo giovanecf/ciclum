@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   delete "sair", to: "sessions#destroy", as: :logout
   get "cadastro", to: "registrations#new", as: :signup
   post "cadastro", to: "registrations#create"
+  get "sobre", to: "pages#about", as: :about
 
   root "dashboard#show"
   resources :study_cycles, only: [:index, :create, :update, :destroy], path: "ciclos" do
