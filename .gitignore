@@ -1,5 +1,6 @@
 .env*
 !.env.example
+!.env.production.example
 /.bundle
 /.kamal/secrets
 /log/*
