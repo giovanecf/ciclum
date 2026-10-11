@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title><%= content_for(:title) || "Ciclum — Ciclo de estudos" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#f9f8f6">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%= csrf_meta_tags %><%= csp_meta_tag %>
+    <% design_system_host = Rails.env.production? ? "https://design-system.farmacia.ufmg.br" : "https://design-system.farmacia.local" %>
+    <link rel="stylesheet" href="<%= design_system_host %>/dist/latest/farmacia-ds.min.css">
+    <script src="<%= design_system_host %>/dist/latest/farmacia-ds.min.js" defer></script>
+    <%= stylesheet_link_tag :app %>
+    <%= javascript_include_tag "application", defer: true %>
+  </head>
+  <body class="ffds-root">
+    <header class="topbar ffds-navbar"><div class="container nav-wrap">
+      <%= link_to root_path, class: "brand ffds-navbar-brand" do %>
+        <%= image_tag "/icon.svg", class: "brand-mark", alt: "" %>
+        <span>ciclum</span>
+      <% end %>
+      <% if current_user %>
+        <nav><%= link_to "Dashboard", root_path, class: "ffds-nav-link" %><%= link_to "Disciplinas", cycle_subjects_path, class: "ffds-nav-link" %><%= link_to "Sessões", study_sessions_path, class: "ffds-nav-link" %><%= link_to "Ciclos", study_cycles_path, class: "ffds-nav-link" %></nav>
+        <span class="cycle-pill ffds-badge ffds-badge-primary" title="Nome do ciclo ativo atualmente">Ciclo: <%= active_cycle.name %></span>
+        <div class="account-menu"><span><%= current_user.email %></span><%= button_to "Sair", logout_path, method: :delete, class: "button ffds-btn ffds-btn-sm ffds-btn-secondary" %></div>
+      <% else %>
+        <nav class="auth-nav"><%= link_to "Entrar", login_path, class: "ffds-nav-link" %><%= link_to "Criar conta", signup_path, class: "ffds-nav-link" %></nav>
+      <% end %>
+    </div></header>
+    <main class="container ffds-container page <%= 'auth-page' unless current_user %>">
+      <% if notice %><div class="flash success ffds-alert ffds-alert-success"><%= notice %></div><% end %>
+      <% if alert %><div class="flash error ffds-alert ffds-alert-danger"><%= alert %></div><% end %>
+      <%= yield %>
+    </main>
+    <footer class="container footer">Ciclum <span>•</span> seu ciclo, no seu ritmo</footer>
+  </body>
+</html>

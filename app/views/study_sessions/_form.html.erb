@@ -1,0 +1,5 @@
+<% if f.object.errors.any? %><div class="form-errors ffds-alert ffds-alert-danger"><%= f.object.errors.full_messages.to_sentence %></div><% end %>
+<div class="field"><%= f.label :minutes, "Minutos estudados" %><%= f.number_field :minutes, min: 1, step: 1, required: true, placeholder: "Ex.: 60", class: "ffds-form-control" %></div>
+<div class="field"><%= f.label :cycle_subject_id, "Disciplina" %><%= f.collection_select :cycle_subject_id, active_cycle.cycle_subjects.available.order(:position), :id, :name, {prompt: "Selecione uma disciplina"}, { required: true, class: "ffds-form-control" } %></div>
+<div class="field"><%= f.label :studied_on, "Data do estudo" %><%= f.date_field :studied_on, required: true, class: "ffds-form-control" %></div>
+<p class="hint">Sessões de outra disciplina geram crédito sem mudar a disciplina atual. A data não altera a sequência de processamento.</p>

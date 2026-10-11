@@ -1,0 +1,46 @@
+<% content_for :title, "Dashboard — Ciclum" %>
+<div class="page-heading"><div><p class="eyebrow">SEU CICLO CONTÍNUO</p><h1>Olá, vamos estudar?</h1><p class="muted">O ciclo segue no seu ritmo. A semana não zera seu progresso.</p></div><%= link_to "+ Adicionar sessão", new_study_session_path, class: "button ffds-btn ffds-btn-primary" %></div>
+<% if @progress.current_subject.nil? %>
+  <section class="empty-state panel ffds-card"><div class="empty-icon">✦</div><h2>Vamos montar seu ciclo</h2><p>Adicione suas disciplinas e configure os minutos práticos quando quiser.</p><%= link_to "Adicionar disciplina", cycle_subjects_path, class: "button ffds-btn ffds-btn-primary" %></section>
+<% else %>
+  <section class="hero panel">
+    <div class="hero-copy"><p class="eyebrow">DISCIPLINA ATUAL</p><h2><%= @progress.current_subject.name %></h2><p class="muted">Próxima: <strong><%= @progress.next_subject&.name || "—" %></strong></p></div>
+    <div class="remaining"><span>Faltam</span><strong><%= @progress.remaining_minutes %></strong><small>minutos</small></div>
+    <div class="progress-area"><div class="progress-label"><span>Passagem atual</span><span><%= @progress.consumed_minutes %> / <%= @progress.goal_minutes %> min</span></div><div class="progress-track"><span style="width:<%= @progress.goal_minutes.zero? ? 0 : [@progress.consumed_minutes * 100 / @progress.goal_minutes, 100].min %>%"></span></div></div>
+  </section>
+<% end %>
+<section class="stats-grid ffds-row">
+  <% {"Hoje" => @totals[:today], "Semana" => @totals[:week], "Mês" => @totals[:month], "Total" => @totals[:total]}.each do |label, minutes| %>
+    <article class="stat-card ffds-card ffds-col-6 ffds-col-lg-3"><span class="stat-label"><%= label %></span><div class="stat-time"><%= time_value(minutes) %></div></article>
+  <% end %>
+</section>
+<section class="panel ffds-card ranking-panel">
+  <div class="ranking-heading">
+    <div><p class="eyebrow">DESAFIO SEMANAL</p><h2>Seu ranking de esforço</h2><p class="muted">Conquistas baseadas nos minutos estudados nesta semana.</p></div>
+    <div class="rank-current"><span>FAIXA ATUAL</span><strong><%= @ranking.title %></strong></div>
+  </div>
+  <div class="rank-progress-summary">
+    <div class="rank-progress-copy"><span><%= time_value(@ranking.weekly_minutes) %> nesta semana</span>
+      <% if @ranking.next_level %><small>Faltam <strong><%= @ranking.next_level.minutes - @ranking.weekly_minutes %> min</strong> para <%= @ranking.next_level.name %></small><% else %><small>Você alcançou a faixa máxima da lista!</small><% end %>
+    </div>
+    <div class="progress-track rank-progress-track"><span style="width:<%= @ranking.progress_percent %>%"></span></div>
+  </div>
+  <div class="rank-ladder">
+    <% @ranking.levels.each_with_index do |level, index| %>
+      <div class="rank-level <%= 'reached' if @ranking.reached?(level) %>">
+        <strong><%= level.name %></strong>
+        <div class="rank-bar"><span style="width:<%= @ranking.level_percent(level) %>%;--rank-color:<%= @ranking.color_for(index) %>"></span></div>
+        <small><%= level.minutes %> min/sem · <%= formatted_hours(level.minutes / 6.0) %>/dia</small>
+      </div>
+    <% end %>
+  </div>
+  <p class="rank-note">A média diária usa 6 dias de estudo por semana. O ranking é um desafio pessoal; o ciclo contínuo segue sem reiniciar.</p>
+</section>
+<section class="dashboard-grid">
+  <article class="panel ffds-card details-panel"><div class="section-title"><div><p class="eyebrow">VISÃO GERAL</p><h2><%= @cycle.name %></h2></div><%= link_to "Editar ciclo", study_cycles_path, class: "text-link" %></div>
+    <div class="overview-grid"><div><span class="muted">Referência semanal</span><strong><%= @cycle.weekly_reference_minutes %> min</strong></div><div><span class="muted">Metas práticas</span><strong><%= @subjects.sum { |s| s.configured_minutes.to_i } %> min</strong></div><div><span class="muted">Diferença</span><strong><%= @subjects.sum { |s| s.configured_minutes.to_i } - @cycle.weekly_reference_minutes %> min</strong></div><div><span class="muted">Voltas concluídas</span><strong><%= @progress.completed_laps %></strong></div></div>
+  </article>
+  <article class="panel ffds-card subjects-panel"><div class="section-title"><div><p class="eyebrow">NA ROTAÇÃO</p><h2>Disciplinas</h2></div><%= link_to "Ver todas", cycle_subjects_path, class: "text-link" %></div>
+    <% if @subjects.empty? %><p class="muted">Nenhuma disciplina cadastrada.</p><% else %><div class="subject-list"><% @subjects.each do |subject| %><div class="subject-row"><span><%= subject.name %></span><span><%= subject.configured_minutes ? "#{subject.configured_minutes} min" : "Sem meta" %></span><small>Crédito: <%= @progress.credits[subject.id].to_i %> min</small></div><% end %></div><% end %>
+  </article>
+</section>

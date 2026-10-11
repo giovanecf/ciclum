@@ -1,0 +1,6 @@
+<% if f.object.errors.any? %><div class="form-errors ffds-alert ffds-alert-danger"><%= f.object.errors.full_messages.to_sentence %></div><% end %>
+<div class="field"><%= f.label :name, "Nome" %><%= f.text_field :name, required: true, placeholder: "Ex.: Direito Constitucional", class: "ffds-form-control" %></div>
+<div class="field"><%= f.label :configured_minutes, "Minutos práticos (opcional)" %><%= f.number_field :configured_minutes, min: 1, placeholder: "Ex.: 120", class: "ffds-form-control" %></div>
+<div class="field"><%= f.label :questions_count, "Questões na prova (opcional)" %><%= f.number_field :questions_count, min: 0, class: "ffds-form-control" %></div>
+<div class="field"><%= f.label :points_per_question, "Pontos por questão (opcional)" %><%= f.number_field :points_per_question, min: 0.01, step: 0.01, placeholder: "1", class: "ffds-form-control" %></div>
+<div class="field"><%= f.label :knowledge_level, "Conhecimento" %><%= f.select :knowledge_level, [["1 · Péssimo",1],["2 · Ruim",2],["3 · Regular",3],["4 · Bom",4],["5 · Ótimo",5]], {}, { class: "ffds-form-control" } %></div>
