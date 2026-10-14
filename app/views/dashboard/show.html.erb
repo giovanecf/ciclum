@@ -44,3 +44,6 @@
     <% if @subjects.empty? %><p class="muted">Nenhuma disciplina cadastrada.</p><% else %><div class="subject-list"><% @subjects.each do |subject| %><div class="subject-row"><span><%= subject.name %></span><span><%= subject.configured_minutes ? "#{subject.configured_minutes} min" : "Sem meta" %></span><small>Crédito: <%= @progress.credits[subject.id].to_i %> min</small></div><% end %></div><% end %>
   </article>
 </section>
+<aside class="daily-quote" aria-label="Frase do dia">
+  <blockquote lang="en"><%= daily_motivational_quote %></blockquote>
+</aside>

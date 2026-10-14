@@ -522,6 +522,21 @@ main.container,
   padding: var(--space-6);
 }
 
+.daily-quote {
+  max-width: 76ch;
+  margin: var(--space-8) auto 0;
+  padding-inline: var(--space-4);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.daily-quote blockquote {
+  margin: 0;
+}
+
 .section-title {
   margin-bottom: var(--space-4);
 }
