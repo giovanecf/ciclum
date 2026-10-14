@@ -2,7 +2,8 @@ module DashboardHelper
   # Add new phrases here; the selection stays the same throughout each day.
   MOTIVATIONAL_QUOTES = [
     "The fact that you’re still trying, even gently, means something good is still alive in you.",
-    "Stop scrolling and get back to your work. You have goals, you have a purpose and you’re here for a reason. The world needs you."
+    "Stop scrolling and get back to your work. You have goals, you have a purpose and you’re here for a reason. The world needs you.",
+    "Cheer for the other side, because with out them you would have no one to play with"
   ].freeze
 
   def daily_motivational_quote
