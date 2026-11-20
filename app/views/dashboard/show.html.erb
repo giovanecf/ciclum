@@ -45,5 +45,5 @@
   </article>
 </section>
 <aside class="daily-quote" aria-label="Frase do dia">
-  <blockquote lang="en"><%= daily_motivational_quote %></blockquote>
+  <blockquote lang="<%= daily_motivational_quote == "Constância vence." ? "pt-BR" : "en" %>"><%= daily_motivational_quote %></blockquote>
 </aside>
