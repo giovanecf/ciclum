@@ -138,7 +138,7 @@ GEM
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
-    puma (8.0.2)
+    puma (8.1.2)
       nio4r (~> 2.0)
     raabro (1.5.0)
     racc (1.8.1)
@@ -231,7 +231,7 @@ DEPENDENCIES
   bcrypt (~> 3.1)
   pg (~> 1.6)
   propshaft
-  puma (~> 8.0)
+  puma (~> 8.1)
   rails (~> 8.1.4)
   solid_cable
   solid_cache
